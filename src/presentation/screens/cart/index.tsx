@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -26,6 +26,7 @@ const CartScreen = () => {
   const dispatch = useDispatch<any>();
   const navigation = useNavigation<NavigationProp>();
   const {top} = useSafeAreaInsets();
+  const [isSummaryExpanded, setIsSummaryExpanded] = useState(true);
   const {
     cart,
     subtotal,
@@ -129,7 +130,9 @@ const CartScreen = () => {
 
       {cart.length > 0 && (
         <View style={styles.summary}>
-          <View style={styles.summaryCard}>
+          <TouchableOpacity
+            style={styles.summaryToggle}
+            onPress={() => setIsSummaryExpanded(!isSummaryExpanded)}>
             <View style={styles.summaryHeader}>
               <Ionicons
                 name="receipt-outline"
@@ -137,22 +140,33 @@ const CartScreen = () => {
                 color={colors.grey333}
               />
               <Text style={styles.summaryHeaderText}>Order Summary</Text>
+              <Ionicons
+                name={isSummaryExpanded ? 'chevron-up' : 'chevron-down'}
+                size={20}
+                color={colors.grey333}
+              />
             </View>
+          </TouchableOpacity>
 
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>Subtotal</Text>
-              <Text style={styles.summaryValue}>AED {subtotal.toFixed(2)}</Text>
+          {isSummaryExpanded && (
+            <View style={styles.summaryCard}>
+              <View style={styles.summaryRow}>
+                <Text style={styles.summaryLabel}>Subtotal</Text>
+                <Text style={styles.summaryValue}>
+                  AED {subtotal.toFixed(2)}
+                </Text>
+              </View>
+              <View style={styles.summaryRow}>
+                <Text style={styles.summaryLabel}>Tax (10%)</Text>
+                <Text style={styles.summaryValue}>AED {tax.toFixed(2)}</Text>
+              </View>
+              <View style={styles.divider} />
+              <View style={styles.summaryRow}>
+                <Text style={styles.totalLabel}>Total Amount</Text>
+                <Text style={styles.totalValue}>AED {total.toFixed(2)}</Text>
+              </View>
             </View>
-            <View style={styles.summaryRow}>
-              <Text style={styles.summaryLabel}>Tax (10%)</Text>
-              <Text style={styles.summaryValue}>AED {tax.toFixed(2)}</Text>
-            </View>
-            <View style={styles.divider} />
-            <View style={styles.summaryRow}>
-              <Text style={styles.totalLabel}>Total Amount</Text>
-              <Text style={styles.totalValue}>AED {total.toFixed(2)}</Text>
-            </View>
-          </View>
+          )}
 
           <TouchableOpacity
             style={styles.paymentSelector}
@@ -176,7 +190,6 @@ const CartScreen = () => {
         </View>
       )}
 
-      {/* Payment Method Selection Modal */}
       <Modal
         visible={showPaymentModal}
         transparent
@@ -342,12 +355,12 @@ const styles = StyleSheet.create({
     paddingTop: 8,
   },
   listContentWithCart: {
-    paddingBottom: 300,
+    paddingBottom: 350,
   },
   item: {
     flexDirection: 'row',
     marginHorizontal: 12,
-    marginBottom: 12,
+    marginBottom: 16,
     backgroundColor: colors.white,
     borderRadius: 12,
     padding: 12,
@@ -434,7 +447,6 @@ const styles = StyleSheet.create({
   },
   summary: {
     backgroundColor: colors.white,
-    padding: 16,
     borderTopWidth: 1,
     borderColor: colors.greyeee,
     position: 'absolute',
@@ -446,10 +458,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
   },
+  summaryToggle: {
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.greyeee,
+  },
   summaryCard: {
     backgroundColor: colors.whitef9,
     borderRadius: 12,
     padding: 14,
+    margin: 16,
     marginBottom: 12,
     borderWidth: 1,
     borderColor: colors.greyeee,
@@ -457,10 +475,7 @@ const styles = StyleSheet.create({
   summaryHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.greyeee,
+    justifyContent: 'space-between',
   },
   summaryHeaderText: {
     fontSize: 16,
@@ -503,6 +518,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     padding: 14,
     borderRadius: 12,
+    marginHorizontal: 16,
     marginBottom: 12,
     borderWidth: 1,
     borderColor: colors.greyeee,
@@ -537,6 +553,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
+    marginHorizontal: 16,
+    marginBottom: 16,
     elevation: 3,
     shadowColor: colors.primary,
     shadowOffset: {width: 0, height: 2},
