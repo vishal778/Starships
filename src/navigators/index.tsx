@@ -1,6 +1,8 @@
 import React from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {View, Text, StyleSheet} from 'react-native';
+import {useSelector} from 'react-redux';
 import {RootStackParamList, RootTabParamList} from './types';
 import HomeScreen from '../presentation/screens/home';
 import SearchScreen from '../presentation/screens/search';
@@ -11,15 +13,33 @@ import colors from '../dls/colors';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<RootTabParamList>();
 
+const CartIcon = ({focused, color, size}: {focused: boolean; color: string; size: number}) => {
+  const cart = useSelector((state: any) => state.cartState);
+  const totalItems = Array.isArray(cart) ? cart.reduce((total: number, item: any) => total + item.quantity, 0) : 0;
+
+  return (
+    <View style={styles.iconContainer}>
+      <Ionicons name={focused ? 'cart' : 'cart-outline'} size={size} color={color} />
+      {totalItems > 0 && (
+        <View style={styles.badge}>
+          <Text style={styles.badgeText}>{totalItems}</Text>
+        </View>
+      )}
+    </View>
+  );
+};
+
 const getTabBarIcon = (routeName: string, focused: boolean, color: string, size: number) => {
+  if (routeName === 'Cart') {
+    return <CartIcon focused={focused} color={color} size={size} />;
+  }
+
   let iconName: string;
 
   if (routeName === 'Home') {
     iconName = focused ? 'home' : 'home-outline';
   } else if (routeName === 'Search') {
     iconName = focused ? 'search' : 'search-outline';
-  } else if (routeName === 'Cart') {
-    iconName = focused ? 'cart' : 'cart-outline';
   } else {
     iconName = 'circle';
   }
@@ -54,6 +74,32 @@ const TabNavigator = () => {
     </Tab.Navigator>
   );
 };
+
+const styles = StyleSheet.create({
+  iconContainer: {
+    position: 'relative',
+    width: 24,
+    height: 24,
+  },
+  badge: {
+    position: 'absolute',
+    right: -8,
+    top: -8,
+    backgroundColor: colors.primary,
+    borderRadius: 10,
+    minWidth: 18,
+    height: 18,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: colors.white,
+  },
+  badgeText: {
+    color: colors.white,
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
+});
 
 export const AppNavigators = () => {
   return (
