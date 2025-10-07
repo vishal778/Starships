@@ -46,32 +46,32 @@ const HomeScreen = () => {
           <Text style={styles.name} numberOfLines={2}>
             {item.name}
           </Text>
-          <View style={styles.priceRow}>
-            <Text style={styles.price}>AED {item.price}</Text>
-            {cartQty === 0 ? (
+          <Text style={styles.price}>AED {item.price}</Text>
+        </View>
+        <View style={styles.buttonContainer}>
+          {cartQty === 0 ? (
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => handleIncreaseQuantity(item)}>
+              <Text style={styles.addButtonText}>ADD</Text>
+            </TouchableOpacity>
+          ) : (
+            <View style={styles.quantityControl}>
               <TouchableOpacity
-                style={styles.addButton}
-                onPress={() => handleIncreaseQuantity(item)}>
-                <Text style={styles.addButtonText}>ADD</Text>
+                style={styles.qtyBtn}
+                onPress={() => handleDecreaseQuantity(item.id)}>
+                <Ionicons name="remove" size={14} color={colors.primary} />
               </TouchableOpacity>
-            ) : (
-              <View style={styles.quantityControl}>
-                <TouchableOpacity
-                  style={styles.qtyBtn}
-                  onPress={() => handleDecreaseQuantity(item.id)}>
-                  <Ionicons name="remove" size={14} color={colors.primary} />
-                </TouchableOpacity>
 
-                <Text style={styles.qtyText}>{cartQty}</Text>
+              <Text style={styles.qtyText}>{cartQty}</Text>
 
-                <TouchableOpacity
-                  style={styles.qtyBtn}
-                  onPress={() => handleIncreaseQuantity(item)}>
-                  <Ionicons name="add" size={14} color={colors.primary} />
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
+              <TouchableOpacity
+                style={styles.qtyBtn}
+                onPress={() => handleIncreaseQuantity(item)}>
+                <Ionicons name="add" size={14} color={colors.primary} />
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </View>
     );
@@ -171,11 +171,12 @@ const styles = StyleSheet.create({
   row: {
     justifyContent: 'space-between',
     paddingHorizontal: 12,
-    marginBottom: 12,
+    marginBottom: 16,
+    gap: 8,
   },
   card: {
     backgroundColor: colors.white,
-    width: '48%',
+    width: '47%',
     borderRadius: 12,
     overflow: 'hidden',
     borderWidth: 1,
@@ -185,7 +186,9 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 6},
     shadowOpacity: 0.25,
     shadowRadius: 12,
-    marginBottom: 4,
+    marginBottom: 8,
+    flex: 1,
+    flexDirection: 'column',
   },
   imageContainer: {
     width: '100%',
@@ -203,6 +206,12 @@ const styles = StyleSheet.create({
   },
   cardContent: {
     padding: 10,
+    flex: 1,
+  },
+  buttonContainer: {
+    padding: 10,
+    paddingTop: 0,
+    alignItems: 'flex-start',
   },
   name: {
     fontWeight: '600',
@@ -210,32 +219,29 @@ const styles = StyleSheet.create({
     color: colors.grey333,
     lineHeight: 16,
     marginBottom: 6,
-    minHeight: 32,
-  },
-  priceRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    gap: 4,
   },
   price: {
     color: colors.grey333,
     fontWeight: '700',
     fontSize: 14,
-    flex: 1,
+    marginBottom: 6,
   },
   addButton: {
     backgroundColor: colors.white,
     borderWidth: 1,
     borderColor: colors.primary,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
+    paddingHorizontal: 20,
+    paddingVertical: 8,
     borderRadius: 6,
     elevation: 2,
     shadowColor: colors.primary,
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.3,
     shadowRadius: 3,
+    alignSelf: 'flex-start',
+    minWidth: 80,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   addButtonText: {
     color: colors.primary,
@@ -250,13 +256,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.primary,
     borderRadius: 6,
-    paddingHorizontal: 2,
-    paddingVertical: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 6,
     elevation: 2,
     shadowColor: colors.primary,
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.3,
     shadowRadius: 3,
+    alignSelf: 'flex-start',
+    minWidth: 80,
   },
   qtyBtn: {
     padding: 2,
