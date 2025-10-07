@@ -250,7 +250,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.primary,
     borderRadius: 6,
-    paddingHorizontal: 4,
+    paddingHorizontal: 2,
     paddingVertical: 4,
     elevation: 2,
     shadowColor: colors.primary,
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   qtyText: {
-    marginHorizontal: 10,
+    marginHorizontal: 6,
     fontSize: 13,
     fontWeight: '700',
     color: colors.primary,

@@ -428,14 +428,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.primary,
     borderRadius: 6,
-    paddingHorizontal: 4,
+    paddingHorizontal: 2,
     paddingVertical: 4,
   },
   qtyBtn: {
     padding: 2,
   },
   qty: {
-    marginHorizontal: 12,
+    marginHorizontal: 6,
     fontSize: 14,
     fontWeight: '700',
     color: colors.primary,
